@@ -127,7 +127,7 @@ app.post("/add-travel-story", authenticateToken, async (req, res) => {
         });
         
         await travelStory.save();
-        res.status(201).json({ story: travelStory, message:"Added Succesfully"});
+        res.status(201).json({ story: travelStory, message:"Added Suaaasccesfully"});
     } catch (error) {
         res.status(400).json ({ error: true, message: error.message });
     }
