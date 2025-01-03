@@ -113,7 +113,38 @@ app.post("/add-travel-story", authenticateToken, async (req, res) => {
         return res.status(400).json({ error: true, message: "All fields are required" });
     }
 
-   
+
+    const parsedVisitedDate = new Date(parseInt(visitedDate));
+
+    try {
+        const travelStory = new TravelStory({
+            title,
+            story,
+            visitedLocation,
+            userId,
+            imageUrl,
+            visitedDate: parsedVisitedDate,
+        });
+        
+        await travelStory.save();
+        res.status(201).json({ story: travelStory, message:"Added Suaaasccesfully"});
+    } catch (error) {
+        res.status(400).json ({ error: true, message: error.message });
+    }
+
+});
+
+app.post("/get-all-stories", authenticateToken, async (req, res) => {
+    const { userid } = res.user;
+
+    try{
+        const travelStories = await TravelStory.find({ userId: userid }).sort({
+            isFavorite: -1,
+        });
+    res.status(200).json({stories: travelStories});
+    } catch (error) {
+        res.status(500).json({ error: true, message: error.message });
+    }
 });
 
 // Start the server
