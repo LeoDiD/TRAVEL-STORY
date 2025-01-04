@@ -239,10 +239,10 @@ app.delete("/delete-travel-story", async (req, res) => {
         if (!travelStory) {
             return res
             .status(404)
-            .json({ error: true, message: ""})
+            .json({ error: true, message: "try"})
      }
     } catch (error) {
-        
+
     }
 });
 
