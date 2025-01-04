@@ -160,7 +160,7 @@ app.post("/image-upload", upload.single("image"), async (req, res) => {
         }
     
 
-    const imageUrl = `https//localhost:8000/uploads/${req.file.filename}`;
+const imageUrl = `https://localhost:8000/uploads/${req.file.filename}`;
 
     res.status(201).json({ imageUrl });
 } catch (error) {
@@ -178,7 +178,7 @@ app.delete("/delete-image", async (req, res) => {
     }
 
     try{
-        const filename = path.basement(imageUrl);
+        const filename = path.basename(imageUrl);
 
         const filepath = path.join(__dirname, 'uploads', filename);
     
@@ -191,6 +191,41 @@ app.delete("/delete-image", async (req, res) => {
     } catch (error) {
         res.status(200).json({ error: true, message: error.message });
     }
+});
+
+
+app.post("/edit-story/:id", async (req, res) => {
+    const { id } = req.params;
+    const { title, story, visitedLocation, imageUrl, visitedDate } = req.body;
+    const { userId } = req.user;
+
+    if(!title || !story || !visitedLocation|| !imageUrl || !visitedDate) {
+        return res
+        .status(400)
+        .json({ error: true, message: "" });
+
+        const parsedVisitedDate = new Date(parseInt(visitedDate));
+    }
+    try{
+        const travelStory = await TravelStory.findOne({ _id, userId: userId });
+
+        if (!travelStory) {
+            return res.status(404).json({ error: true, message: "Travel story not found" });
+        }
+
+    const placeholderImgUrl = `http://localhost:8000/assets/placeholder.png`;
+
+    travelStory.title = title;
+    travelStory.story = story;
+    travelStory.visitedDAte = visitedDate;
+    travelStory.visitedLocation = visitedLocation;
+    travelStory.imageUrl = imageUrl;
+
+    await travelStory.save();
+    res.status(200).json({ story:travelStory, message:"Update Successful" });
+} catch (error) {
+    res.status(200).json({ error: true, message: error.message });
+}
 });
 
 
