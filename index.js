@@ -6,6 +6,9 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const upload = require("./multer");
+const fs = require("fs");
+const path = require("path");
 
 const { authenticateToken } = require("./utilities");
 
@@ -134,7 +137,7 @@ app.post("/add-travel-story", authenticateToken, async (req, res) => {
 
 });
 
-app.post("/get-all-stories", authenticateToken, async (req, res) => {
+app.get("/get-all-stories", authenticateToken, async (req, res) => {
     const { userid } = res.user;
 
     try{
@@ -147,7 +150,54 @@ app.post("/get-all-stories", authenticateToken, async (req, res) => {
     }
 });
 
-// Start the server
+app.post("/image-upload", upload.single("image"), async (req, res) => {
+
+    try {
+        if (!req.file) {
+            return res
+            .status(400)
+            .json({ error: true, message: "No image uploaded"});
+        }
+    
+
+    const imageUrl = `https//localhost:8000/uploads/${req.file.filename}`;
+
+    res.status(201).json({ imageUrl });
+} catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+}
+});
+
+app.delete("/delete-image", async (req, res) => {
+    const { imageUrl } = req.query;
+
+    if (!imageUrl) {
+        return res 
+        .status(400)
+        .json({ error: true, message: "imageUrl parameter is requiredd" });
+    }
+
+    try{
+        const filename = path.basement(imageUrl);
+
+        const filepath = path.join(__dirname, 'uploads', filename);
+    
+    if (fs.existsSync(filepath)) {
+        fs.unlinkSync(filepath);
+        res.status(200).json({ message: "Image  deleted successfully"});
+    } else {
+        res.status(404).json({ error: true, message: "Image not found" });
+    }
+    } catch (error) {
+        res.status(200).json({ error: true, message: error.message });
+    }
+});
+
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
+
+
 app.listen(8000, () => {
     console.log("Server is running on port 8000");
 });
