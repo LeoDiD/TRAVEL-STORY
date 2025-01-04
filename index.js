@@ -14,6 +14,7 @@ const { authenticateToken } = require("./utilities");
 
 const User = require("./models/user.model");
 const TravelStory = require("./models/travelStory.model");
+const travelStoryModel = require("./models/travelStory.model");
 
 mongoose.connect(config.connectionString);
 
@@ -227,6 +228,24 @@ app.post("/edit-story/:id", async (req, res) => {
     res.status(200).json({ error: true, message: error.message });
 }
 });
+
+app.delete("/delete-travel-story", async (req, res) => {
+    const  { id } = req.params;
+    const { userId } = req.user;
+
+    try {
+        const travelStory = await TravelStory.findOne({ _id: id, userId: userId });
+
+        if (!travelStory) {
+            return res
+            .status(404)
+            .json({ error: true, message: ""})
+     }
+    } catch (error) {
+        
+    }
+});
+
 
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
