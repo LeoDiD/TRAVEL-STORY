@@ -260,7 +260,26 @@ app.delete("/delete-travel-story", async (req, res) => {
 }
 })
 
+app.put("/update-is-favorite/:id", async (req, res) => {
+    const  { id } = req.params;
+    const { isFavorite } = req.body;
+    const { userId } = req.user;
 
+     try {
+        const travelStory = await TravelStory.findOne({ _id: id, userId: userId });
+
+        if (!travelStory) {
+            return res.status(400).json({ error: true, message: "Travel story not found" });
+        }
+
+        travelStory.isFavorite = isFavorite;
+
+        await travelStory.save();
+        res.status(200).json({ story:travelStory, message: "Update Successful" });
+     } catch (error) {
+        res.status(500).json({ error: true, message: error.message });
+     }
+});
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
