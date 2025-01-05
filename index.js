@@ -239,12 +239,26 @@ app.delete("/delete-travel-story", async (req, res) => {
         if (!travelStory) {
             return res
             .status(404)
-            .json({ error: true, message: "try"})
+            .json({ error: true, message: "Travel story not found" });
      }
-    } catch (error) {
+     await travelStory.deleteOne({ _id: id, userid: userId });
 
+     const imageUrl = travelStory.imageUrl;
+     const filename = path.basename(imageUrl);
+
+     const filepath = path.join(__dirname, 'uploads', filename);
+
+     fs.unlink(filepath, (err) => {
+    if (err) {
+        console.error("Failed to delete image file:", err);
     }
-});
+    });
+
+    res.status(200).json({ message: "Travel story deleted successfully" });
+} catch (error) {
+    res.status(200).json({ error: true, message: error.message });
+}
+})
 
 
 
