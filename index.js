@@ -315,8 +315,25 @@ app.post("/search", async (req, res) => {
     }
 })
 
+app.get("/travel-stories/filter", async (req, res) => {
+    const { startDate, endDate } = req.query;
+    const { userId } = req.user;
 
+    try {
+        // Use the correct variable name and directly create Date objects
+        const start = new Date(startDate);
+        const end = new Date(endDate);
 
+        const filterStories = await TravelStory.find({
+            userId: userId,
+            visitedDate: { $gte: start, $lte: end },
+        }).sort({ isFavorite: -1 }); // Corrected sorting syntax
+
+        res.status(200).json({ stories: filterStories });
+    } catch (error) {
+        res.status(500).json({ error: true, message: error.message });
+    }
+});
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
