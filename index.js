@@ -287,13 +287,31 @@ app.post("/search", async (req, res) => {
     const { userId } = req.user;
 
     if(!query) {
-        return.res.status(404).json ({ error: true, message: "query is required" });
+        app.get('/some-endpoint', (req, res) => {
+            const query = req.query.someParameter; // Example of getting a query parameter
+        
+            if (!query) {
+                return res.status(404).json({ error: true, message: "query is required" });
+            }
+        
+            // Continue processing if the query is present
+            res.status(200).json({ success: true, data: "Your data here" });
+        });
         
     }
     try {
         const searchResult = await TravelStory.find({
             userId: userId,
-        })
+            $or: [
+                { title: { $regex: query, $options: "i" } },
+                { story: { $regex: query, $options: "i" } },
+                { visitedLocation: { $regex: query, $options: "i" } },
+                ],
+        }).sort({ isFavorite: -1 });
+    
+    res.status(200).json({ stories: searchResult });
+    } catch (error) {
+        res.status(500).json({ error: true, message: error.message });
     }
 })
 
