@@ -15,6 +15,7 @@ const { authenticateToken } = require("./utilities");
 const User = require("./models/user.model");
 const TravelStory = require("./models/travelStory.model");
 const travelStoryModel = require("./models/travelStory.model");
+const { error } = require("console");
 
 mongoose.connect(config.connectionString);
 
@@ -280,6 +281,24 @@ app.put("/update-is-favorite/:id", async (req, res) => {
         res.status(500).json({ error: true, message: error.message });
      }
 });
+
+app.post("/search", async (req, res) => {
+    const { query } = req.params;
+    const { userId } = req.user;
+
+    if(!query) {
+        return.res.status(404).json ({ error: true, message: "query is required" });
+        
+    }
+    try {
+        const searchResult = await TravelStory.find({
+            userId: userId,
+        })
+    }
+})
+
+
+
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
