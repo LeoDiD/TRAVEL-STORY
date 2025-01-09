@@ -12,6 +12,9 @@ export default {
         primary: "#05B6D3",
         secondary: "#EF863E",
       },
+      backgroundImage: {
+        'login-bg-img': "('./src/assets/images/bg-image.png.webp')",
+      }
     },
   },
   plugins: [],
