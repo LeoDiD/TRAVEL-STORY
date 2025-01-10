@@ -36,10 +36,10 @@ const Login = () => {
               <p className='text-xs text-slate-500 text-center my-4'>Or</p>
 
               <button
-                type='submit' // Changed to type='button' to prevent form submission
+                type='button' // Changed to type="button"
                 className=''
                 onClick={() => {
-                  navigate("/signUp");
+                  navigate("/signup"); // Redirect to the SignUp page
                 }}
               >
                 CREATE ACCOUNT
@@ -50,6 +50,7 @@ const Login = () => {
       </div>
     </div>
   );
+  console.log("Login component loadeded");
 };
 
 export default Login;
