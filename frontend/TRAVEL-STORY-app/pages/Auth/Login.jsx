@@ -17,13 +17,13 @@ const Login = () => {
             <h4 className=''>
               Capture Your <br /> Journeys
             </h4>
-            <p className=''>
+            <p className='text-[15px] text-white leading-6 pr-7 mt-4'>
               Record your travel experiences and memories in your personal
               travel journal.
             </p>
           </div>
 
-          <div className=''>
+          <div className='w-2/4 h-[75h] bg-white rounded-r-lg p-16 shadow-lg shadow-cyan-200/20'>
             <form onSubmit={handleSubmit}> {/* Corrected onSubmit */}
               <h4 className='text-2xl font-semibold mb-7'>Login</h4>
 
@@ -32,8 +32,11 @@ const Login = () => {
               <button type='submit' className=''>
                 LOGIN {/* Changed button text to "LOGIN" */}
               </button>
+
+              <p className='text-xs text-slate-500 text-center my-4'>Or</p>
+
               <button
-                type='button' // Changed to type='button' to prevent form submission
+                type='submit' // Changed to type='button' to prevent form submission
                 className=''
                 onClick={() => {
                   navigate("/signUp");
