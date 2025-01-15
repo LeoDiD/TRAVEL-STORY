@@ -1,13 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import { BrowserRouter } from 'react-router-dom';
-import './index.css'; // Import your Tailwind CSS file
+import ReactDOM from 'react-dom';
+import App from './App'; // Adjust the path if your App component is in a different location
+import './index.css'; // If you have global styles
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root') // This should match the id in your HTML
 );

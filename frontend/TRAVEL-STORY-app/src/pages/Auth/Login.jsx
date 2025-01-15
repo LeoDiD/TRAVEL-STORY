@@ -1,5 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
+import PasswordInput from '../../components/Input/PasswordInput';
 
 const Login = () => {
   const navigate = useNavigate(); // Initialize navigate
@@ -22,12 +23,14 @@ const Login = () => {
             </p>
           </div>
 
-          {/* Adjusted the width and added margin to the login form */}
+          /* Adjusted the width and added margin to the login form */
           <div className='w-2/4 h-[75vh] bg-white rounded-r-lg p-16 shadow-lg shadow-cyan-200/20'>
             <form onSubmit={handleSubmit}>
               <h4 className='text-2xl font-semibold mb-7'>Login</h4>
 
               <input type='text' placeholder='Email' className='input-box mb-4' />
+
+              <PasswordInput />
 
               <button type='submit' className='btn-primary'>
                 LOGIN
