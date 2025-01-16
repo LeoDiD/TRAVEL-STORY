@@ -11,6 +11,7 @@ export default {
         secondary: "#EF863E",
       },
       backgroundImage: {
+        'signup-img': "url('./src/assets/images/bg-image.webp')", // Ensure this path is correct
         'login-img': "url('./src/assets/images/bg-image.webp')", // Ensure this path is correct
       },
     },

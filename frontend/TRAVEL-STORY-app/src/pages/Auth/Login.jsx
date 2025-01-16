@@ -3,15 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import PasswordInput from '../../components/Input/PasswordInput';
 
 const Login = () => {
-  const navigate = useNavigate(); // Initialize navigate
+  const [email, setEmail] = React.useState(''); 
+  const [password, setPassword] = React.useState(''); 
+  const [error, setError] = React.useState(null); 
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission
-    // Handle login logic here
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    // Implement your login logic here
   };
 
   return (
     <div className='h-screen bg-cyan-50 overflow-hidden relative'>
+      <div className='login-ui-box right-10 -top-40' />
+      <div className='login-ui-box bg-cyan-200 -bottom-40 right-1/2' />
+
       <div className='container h-screen flex items-center justify-center px-10 mx-auto'>
         <div className='w-1/2 h-[80vh] flex items-end bg-login-img bg-cover bg-center rounded-lg p-10 z-50'>
           <div className='flex-1'>
@@ -23,14 +30,22 @@ const Login = () => {
             </p>
           </div>
 
-          /* Adjusted the width and added margin to the login form */
           <div className='w-2/4 h-[75vh] bg-white rounded-r-lg p-16 shadow-lg shadow-cyan-200/20'>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
               <h4 className='text-2xl font-semibold mb-7'>Login</h4>
 
-              <input type='text' placeholder='Email' className='input-box mb-4' />
+              <input 
+                type='text' 
+                placeholder='Email' 
+                className='input-box mb-4' 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} // Removed the semicolon
+              />
 
-              <PasswordInput />
+              <PasswordInput 
+                value={password} // Use password state here
+                onChange={(e) => setPassword(e.target.value)} // Removed the semicolon
+              />
 
               <button type='submit' className='btn-primary'>
                 LOGIN
