@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import PasswordInput from '../../components/Input/PasswordInput';
+import { validateEmail } from '../../utils/helper';
+import  axiosInstance  from '../../utils/axiosInstance'; 
 
 const Login = () => {
   const [email, setEmail] = React.useState(''); 
@@ -10,8 +12,41 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-    // Implement your login logic here
+    e.preventDefault(); 
+    
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!password) {
+      setError('Please enter a password.');
+      return;
+    }
+
+    setError("");
+    try {
+      const response = await axiosInstance.post('/auth/login', {
+        email: email,
+        password: password,
+      });
+
+      if (response.status === 200) {
+        localStorage.setItem('token', response.data.token);
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      } else {
+        setError('Something went wrong. Please try again later.');
+      }
+    }
   };
 
   return (
@@ -46,6 +81,8 @@ const Login = () => {
                 value={password} // Use password state here
                 onChange={(e) => setPassword(e.target.value)} // Removed the semicolon
               />
+
+              {error && <p className='text-red-500 text-xs mt-2'>{error}</p>}
 
               <button type='submit' className='btn-primary'>
                 LOGIN
