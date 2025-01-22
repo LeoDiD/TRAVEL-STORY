@@ -25,5 +25,5 @@ const Root = () => {
     ) : (
       <Navigate to="/login" />
     );
-}
+};
 export default App;
