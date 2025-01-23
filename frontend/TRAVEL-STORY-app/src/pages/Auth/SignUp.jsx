@@ -12,11 +12,11 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault(); 
     
-    if (!validateEmail(email)) {
-      setError('Please enter a valid email address.');
+    if (!name) {
+      setError('Please enter your name');
       return;
     }
 
@@ -27,7 +27,8 @@ const SignUp = () => {
 
     setError("");
     try {
-      const response = await axiosInstance.post('/auth/login', {
+      const response = await axiosInstance.post('/create-account', {
+        fullName: name,
         email: email,
         password: password,
       });
@@ -59,15 +60,16 @@ const SignUp = () => {
         <div className='w-1/2 h-[80vh] flex items-end bg-signup-img bg-cover bg-center rounded-lg p-10 z-50'>
           <div className='flex-1'>
             <h4 className='text-5xl text-white font-semibold leading-[58px]'>
-              Capture Your <br /> Journeys
+              Join the <br /> Adventure
             </h4>
             <p className='text-[15px] text-white leading-6 pr-7 mt-4'>
-              Record your travel experiences and memories in your personal travel journal.
+              Create an account to start documenting your travel and preserving
+              your memories in your personal travel journal.
             </p>
           </div>
 
           <div className='w-2/4 h-[75vh] bg-white rounded-r-lg p-16 shadow-lg shadow-cyan-200/20'>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSignUp}>
               <h4 className='text-2xl font-semibold mb-7'>Sign Up</h4>
 
               <input 
